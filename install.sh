@@ -117,7 +117,9 @@ info "Package manager:  $PKG_MANAGER"
 info "Privileges:       $([[ ${EUID:-$(id -u)} -eq 0 ]] && echo root || { [[ $CAN_ROOT == 1 ]] && echo 'sudo available' || echo 'no sudo'; })"
 info "Session:          $([[ $SESSION_SSH == 1 ]] && echo SSH || echo local), $([[ $SESSION_GUI == 1 ]] && echo graphical || echo 'no GUI')"
 info "Terminal:         $DETECTED_TERMINAL (from the process tree)"
-info "Invoking shell:   $(basename -- "${SHELL:-unknown}") (login shell); installer runs in bash $BASH_VERSION"
+LOGIN_SHELL=$(getent passwd "$(id -un)" 2>/dev/null | cut -d: -f7)
+LOGIN_SHELL=${LOGIN_SHELL:-${SHELL:-unknown}}
+info "Login shell:      $LOGIN_SHELL; installer runs in bash $BASH_VERSION"
 if [[ $DISTRO_SUPPORTED == 0 ]]; then
 	if [[ $PKG_MANAGER != none ]]; then
 		warn "'$DISTRO_ID' is not on the tested list; using $PKG_MANAGER because it looks like a $DISTRO_FAMILY system."
@@ -279,8 +281,8 @@ step "Done"
 ok "SAKO Terminal Theme $SAKO_VERSION is active."
 [[ -n ${BACKUP_ID:-} ]] && info "Backup of the previous files: ${SAKO_BACKUP_DIR/#$HOME/\~}/$BACKUP_ID"
 for n in "${TERM_NOTES[@]}"; do info "$n"; done
-if [[ $(basename -- "${SHELL:-}") != fish ]]; then
-	info "Your login shell is $(basename -- "${SHELL:-unknown}"). Try the theme with: fish"
+if [[ $(basename -- "$LOGIN_SHELL") != fish ]]; then
+	info "Your login shell is $(basename -- "$LOGIN_SHELL"). Try the theme with: fish"
 	info "Make fish your default shell (optional): $SAKO_ROOT/scripts/set-default-shell.sh"
 fi
 info "See it now in a fresh shell:  exec fish"

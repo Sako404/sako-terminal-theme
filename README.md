@@ -11,12 +11,6 @@ installer that sets it up on CachyOS, Arch, Debian, Ubuntu, Mint and Fedora.
 
 ![SAKO Terminal Theme in KDE Konsole](docs/screenshot.png)
 
-```text
-https://marcinsakowski.com | Build • Automate • Solve | 18:44:20
- sako  …/Projects/sako-terminal-theme   main [!?]
-❯
-```
-
 ## Quick start
 
 ```bash
