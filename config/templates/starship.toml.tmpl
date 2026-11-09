@@ -1,0 +1,65 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+# SAKO Terminal Theme — GENERATED FILE, do not edit by hand.
+# Source: config/templates/starship.toml.tmpl + config/theme.conf
+# Personalise: ~/.config/sako-terminal-theme/local.conf, then re-run install.sh
+#
+# Line 1: branding + time
+# Line 2: user + directory + git
+# Line 3: prompt character
+format = """
+[@@SAKO_URL_FMT@@ | @@SAKO_SLOGAN_FMT@@ | ](fg:@@SAKO_GREY@@)$time
+[](@@SAKO_NAVY@@)$username[](bg:@@SAKO_CYAN@@ fg:@@SAKO_NAVY@@)$directory[](fg:@@SAKO_CYAN@@) $git_branch$git_status
+[❯ ](bold @@SAKO_CYAN@@)"""
+
+# No blank line between prompts
+add_newline = false
+
+[username]
+show_always = true
+style_user = "fg:@@SAKO_USER_FG@@ bold bg:@@SAKO_NAVY@@"
+format = '[$user]($style)'
+
+[directory]
+style = "fg:@@SAKO_DIR_FG@@ bold bg:@@SAKO_CYAN@@"
+format = " [󱌢 $path]($style) "
+truncation_length = 3
+truncation_symbol = "…/"
+
+[directory.substitutions]
+"Documents" = "󰈙 "
+"Downloads" = " "
+"Music" = " "
+"Pictures" = " "
+"Projects" = "󱌢 "
+
+[time]
+disabled = false
+time_format = "@@SAKO_TIME_FORMAT_TOML@@"
+style = "bold @@SAKO_GREY@@"
+format = '[$time]($style)'
+
+[git_branch]
+symbol = ""
+style = "bold @@SAKO_GIT_ORANGE@@"
+format = '[ $symbol $branch]($style)'
+
+[git_status]
+style = "bold @@SAKO_GIT_ORANGE@@"
+format = '([\[$all_status$ahead_behind\]]($style))'
+
+# Language modules: subtle, no background
+[nodejs]
+symbol = " "
+style = "bold @@SAKO_CYAN@@"
+format = "via [$symbol($version )]($style)"
+
+[rust]
+symbol = " "
+style = "bold @@SAKO_CYAN@@"
+format = "via [$symbol($version )]($style)"
+
+[golang]
+symbol = " "
+style = "bold @@SAKO_CYAN@@"
+format = "via [$symbol($version )]($style)"

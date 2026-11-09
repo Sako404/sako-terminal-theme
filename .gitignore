@@ -1,0 +1,7 @@
+# Local test and editor artefacts
+*.log
+*.swp
+.vscode/
+.idea/
+# Personal overrides never belong in the repository
+local.conf

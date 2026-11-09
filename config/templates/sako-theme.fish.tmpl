@@ -1,0 +1,35 @@
+# SAKO Terminal Theme — GENERATED FILE, do not edit by hand.
+# Installed to ~/.config/fish/conf.d/sako-theme.fish by install.sh.
+# Source: config/templates/sako-theme.fish.tmpl + config/theme.conf
+# Personalise: ~/.config/sako-terminal-theme/local.conf, then re-run install.sh
+
+# Only interactive shells (no `return` at top level: fish < 3.4 rejects it).
+if status is-interactive
+    # Readable autosuggestions. A global variable shadows a universal one of the
+    # same name (tested on fish 3.3-4.9, incl. the 4.3+ default theme).
+    # Existing universal variables are left untouched.
+    set -g fish_color_autosuggestion @@SAKO_FISH_AUTOSUGGESTION_HEX@@
+
+    # Starship binary downloaded by the installer lives in ~/.local/bin.
+    if not command -q starship; and test -x "$HOME/.local/bin/starship"
+        fish_add_path -g "$HOME/.local/bin"
+    end
+
+    # Initialise Starship exactly once:
+    #  - skip if config.fish already runs `starship init fish` (it is sourced
+    #    after conf.d, so initialising here too would be a duplicate),
+    #  - skip if an earlier conf.d snippet already initialised it.
+    if command -q starship
+        set -l __sako_cfg "$__fish_config_dir/config.fish"
+        set -l __sako_external_init 0
+        if test -f "$__sako_cfg"
+            and string match -rq '^\s*(starship\s+init\s+fish|eval\s+\(\s*starship\s+init\s+fish)' <"$__sako_cfg"
+            set __sako_external_init 1
+        end
+        if test $__sako_external_init -eq 0
+            and not functions -q __starship_set_job_count
+            and not functions -q enable_transience
+            starship init fish | source
+        end
+    end
+end

@@ -1,0 +1,14 @@
+# SAKO Terminal Theme — your personal overrides.
+#
+# Uncomment and change any setting, then re-run install.sh (or update.sh).
+# Every key from config/theme.conf in the project can be overridden here.
+# This file is yours: install, update and uninstall never overwrite it once
+# you have edited it.
+
+# SAKO_SLOGAN=Build • Automate • Solve
+# SAKO_URL=https://marcinsakowski.com
+# SAKO_TIME_FORMAT=%T
+# SAKO_FISH_AUTOSUGGESTION=#7F8C9A
+# SAKO_DIR_FG=#0B1118
+# SAKO_FONT_FAMILY=JetBrainsMonoNL Nerd Font
+# SAKO_FONT_SIZE=11

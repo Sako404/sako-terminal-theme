@@ -1,0 +1,10 @@
+-- SAKO Terminal Theme — created by install.sh because no WezTerm config existed.
+-- You may edit this file; uninstall.sh will then leave it in place.
+local wezterm = require 'wezterm'
+local config = wezterm.config_builder()
+
+config.color_scheme = 'SAKO'
+config.font = wezterm.font '@@SAKO_FONT_FAMILY@@'
+config.font_size = @@SAKO_FONT_SIZE@@
+
+return config

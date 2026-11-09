@@ -1,0 +1,51 @@
+name: test
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  unit:
+    name: unit tests + shellcheck (Ubuntu runner)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install test tools
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y --no-install-recommends fish zsh shellcheck
+      - name: Install Starship (pinned release, SHA-256 verified)
+        run: |
+          set -euo pipefail
+          v=$(sed -n 's/^STARSHIP_VERSION=//p' lib/deps.sh)
+          sum=$(sed -n 's/^\t\[x86_64\]=//p' lib/deps.sh)
+          curl -fsSL -o /tmp/starship.tgz "https://github.com/starship/starship/releases/download/v$v/starship-x86_64-unknown-linux-musl.tar.gz"
+          echo "$sum  /tmp/starship.tgz" | sha256sum -c -
+          sudo tar -xzf /tmp/starship.tgz -C /usr/local/bin starship
+          starship --version
+      - name: Versions
+        run: bash --version | head -n1; fish --version; zsh --version; shellcheck --version | head -n2; python3 --version
+      - name: Test suite
+        run: tests/run.sh
+
+  distro:
+    name: end-to-end ${{ matrix.image }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        image:
+          - archlinux:latest
+          - ubuntu:24.04
+          - ubuntu:22.04
+          - debian:13
+          - debian:12
+          - fedora:latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install with missing dependencies, verify, re-run, uninstall
+        run: tests/docker.sh "${{ matrix.image }}"
