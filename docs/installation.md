@@ -68,20 +68,24 @@ you connect from. `--font` forces installation, `--no-font` disables it.
 
 ## Without git
 
-Download the current `main` branch as an archive with `curl` (or `wget`) and
-unpack it — only `tar` and `gzip` are needed:
+Download a release archive and its checksum file with `curl` (or `wget`),
+check it, unpack it — only `tar` and `gzip` are needed:
 
 ```bash
-curl -fL -o sako-terminal-theme.tar.gz https://github.com/Sako404/sako-terminal-theme/archive/refs/heads/main.tar.gz
-tar -xzf sako-terminal-theme.tar.gz
-cd sako-terminal-theme-main
+v=1.0.0
+curl -fLO "https://github.com/Sako404/sako-terminal-theme/releases/download/v$v/sako-terminal-theme-$v.tar.gz"
+curl -fLO "https://github.com/Sako404/sako-terminal-theme/releases/download/v$v/SHA256SUMS"
+sha256sum -c SHA256SUMS
+tar -xzf "sako-terminal-theme-$v.tar.gz"
+cd "sako-terminal-theme-$v"
 ./install.sh
 ```
 
-HTTPS protects the download in transit, but there is no separately
-published checksum for this archive yet; prefer `git clone` when git is
-available. A copy installed this way cannot run `update.sh`: download the
-archive again and run its `./install.sh` (your `local.conf` and backups stay
+The checksum detects a corrupted or truncated download. It comes from the
+same GitHub release, so it does not protect against a compromised GitHub
+account; compare it with the sum shown on the release page if that matters.
+A copy installed this way cannot run `update.sh`: download the next release
+the same way and run its `./install.sh` (your `local.conf` and backups stay
 in your home directory).
 
 ## Update
